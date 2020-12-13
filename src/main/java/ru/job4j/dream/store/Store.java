@@ -7,12 +7,14 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Store {
     private static final Store INST = new Store();
+    private static final AtomicInteger POST_ID = new AtomicInteger(4);
 
-    private Map<Integer, Post> posts = new ConcurrentHashMap<>();
-    private Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
+    private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
+    private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
 
     private Store() {
         posts.put(1, new Post(1, "Junior Java Job", "Вакансия Junior Java", LocalDate.now()));
@@ -32,5 +34,8 @@ public class Store {
         return candidates.values();
     }
 
-
+    public void save(Post post) {
+        post.setId(POST_ID.incrementAndGet());
+        posts.put(post.getId(), post);
+    }
 }
