@@ -3,7 +3,6 @@ package ru.job4j.dream.store;
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,12 +15,6 @@ public class Store {
 
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
-
-    private Store() {
-        posts.put(1, new Post(1, "Junior Java Job", "Вакансия Junior Java", LocalDate.now()));
-        posts.put(2, new Post(2, "Middle Java Job", "Вакансия Middle Java", LocalDate.now()));
-        posts.put(3, new Post(3, "Senior Java Job", "Вакансия Senior Java", LocalDate.now()));
-    }
 
     public static Store instOf() {
         return INST;
@@ -36,12 +29,24 @@ public class Store {
     }
 
     public void save(Post post) {
-        post.setId(POST_ID.incrementAndGet());
+        if (post.getId() == 0) {
+            post.setId(POST_ID.incrementAndGet());
+        }
         posts.put(post.getId(), post);
     }
 
+    public Post findPostById(int id) {
+        return posts.get(id);
+    }
+
     public void save(Candidate candidate) {
-        candidate.setId(CANDIDATE_ID.incrementAndGet());
+        if (candidate.getId() == 0) {
+            candidate.setId(CANDIDATE_ID.incrementAndGet());
+        }
         candidates.put(candidate.getId(), candidate);
+    }
+
+    public Candidate findCandidateById(int id) {
+        return candidates.get(id);
     }
 }
