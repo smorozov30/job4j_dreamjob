@@ -1,21 +1,17 @@
 package ru.job4j.dream.model;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 public class Post {
     private int id;
     private String name;
     private String description;
-    private LocalDate created;
+    private Timestamp created;
 
-    public Post(int id, String name) {
+    public Post(int id, String name, String description, Timestamp created) {
         this.id = id;
         this.name = name;
-    }
-
-    public Post(int id, String name, String description, LocalDate created) {
-        this(id, name);
         this.description = description;
         this.created = created;
     }
@@ -44,11 +40,11 @@ public class Post {
         this.description = description;
     }
 
-    public LocalDate getCreated() {
+    public Timestamp getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDate created) {
+    public void setCreated(Timestamp created) {
         this.created = created;
     }
 
@@ -67,5 +63,14 @@ public class Post {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder()
+                .append(id).append(" ")
+                .append(name).append(" ")
+                .append(description).append(" ")
+                .append(created).toString();
     }
 }

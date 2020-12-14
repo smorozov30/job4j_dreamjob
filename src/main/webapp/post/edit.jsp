@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="ru.job4j.dream.store.Store" %>
 <%@ page import="ru.job4j.dream.model.Post" %>
+<%@ page import="ru.job4j.dream.store.PsqlStore" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -24,9 +24,9 @@
 <body>
 <%
     String id = request.getParameter("id");
-    Post post = new Post(0, "");
+    Post post = new Post(0, "", "", null);
     if (id != null) {
-        post = Store.instOf().findPostById(Integer.valueOf(id));
+        post = PsqlStore.instOf().findPostById(Integer.valueOf(id));
     }
 %>
 <div class="container pt-3">
@@ -44,6 +44,10 @@
                     <div class="form-group">
                         <label>Имя</label>
                         <input type="text" class="form-control" name = "name" value="<%=post.getName()%>">
+                    </div>
+                    <div class="form-group">
+                        <label>Описание</label>
+                        <input type="text" class="form-control" name = "description" value="<%=post.getDescription()%>">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>
