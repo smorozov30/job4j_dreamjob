@@ -1,6 +1,7 @@
 package ru.job4j.dream.store;
 
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.Photo;
 import ru.job4j.dream.model.Post;
 
 import java.util.Collection;
@@ -12,9 +13,11 @@ public class MemStore implements Store {
     private static final MemStore INST = new MemStore();
     private static final AtomicInteger POST_ID = new AtomicInteger(4);
     private static final AtomicInteger CANDIDATE_ID = new AtomicInteger(1);
+    private static final AtomicInteger PHOTO_ID = new AtomicInteger(3);
 
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
+    private final Map<Integer, Photo> photos = new ConcurrentHashMap<>();
 
     public static MemStore instOf() {
         return INST;
@@ -28,6 +31,11 @@ public class MemStore implements Store {
     @Override
     public Collection<Candidate> findAllCandidates() {
         return candidates.values();
+    }
+
+    @Override
+    public Collection<Photo> findAllPhotos() {
+        return photos.values();
     }
 
     @Override
@@ -54,5 +62,24 @@ public class MemStore implements Store {
     @Override
     public Candidate findCandidateById(int id) {
         return candidates.get(id);
+    }
+
+    @Override
+    public void save(Photo photo) {
+        if (photo.getId() == 0) {
+            photo.setId(PHOTO_ID.incrementAndGet());
+        }
+        photos.put(photo.getId(), photo);
+    }
+
+    @Override
+    public Photo findPhotoById(int id) {
+        return photos.get(id);
+    }
+
+    @Override
+    public void delete(Candidate candidate) {
+        candidates.remove(candidate.getId());
+        photos.remove(candidate.getPhotoId());
     }
 }

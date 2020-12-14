@@ -14,7 +14,7 @@ public class PsqlMain {
             store.save(new Post(0, "Java Job", "Description", new Timestamp(System.currentTimeMillis())));
         }
         for (int i = 0; i < 3; i++) {
-            store.save(new Candidate(0, "Candidate "));
+            store.save(new Candidate(0, "Candidate ", 0));
         }
 
         System.out.println("********Find All********");
@@ -27,7 +27,7 @@ public class PsqlMain {
 
         System.out.println("********Update********");
         store.save(new Post(2, "UPDATE JAVA JOB", "New description...", new Timestamp(System.currentTimeMillis())));
-        store.save(new Candidate(2, "UPDATE CANDIDATE"));
+        store.save(new Candidate(2, "UPDATE CANDIDATE", 1));
 
         System.out.println("********After update********");
         for (Post post : store.findAllPosts()) {

@@ -2,6 +2,7 @@ package ru.job4j.dream.store;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.Photo;
 import ru.job4j.dream.model.Post;
 
 import java.io.BufferedReader;
@@ -75,13 +76,33 @@ public class PsqlStore implements Store {
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    candidates.add(new Candidate(it.getInt("id"), it.getString("name")));
+                    candidates.add(new Candidate(it.getInt("id"),
+                                                    it.getString("name"),
+                                                    it.getInt("photoId")));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return candidates;
+    }
+
+    @Override
+    public Collection<Photo> findAllPhotos() {
+        List<Photo> photos = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("SELECT * FROM photo")
+        ) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    photos.add(new Photo(it.getInt("id"),
+                            it.getString("name")));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return photos;
     }
 
     @Override
@@ -161,10 +182,11 @@ public class PsqlStore implements Store {
 
     private Candidate createCandidate(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-                PreparedStatement ps = cn.prepareStatement("INSERT INTO candidate(name) VALUES (?)",
+                PreparedStatement ps = cn.prepareStatement("INSERT INTO candidate(name, photoId) VALUES (?, ?)",
                                                                 PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, candidate.getName());
+            ps.setInt(2, candidate.getPhotoId());
             ps.execute();
             try (ResultSet res = ps.getGeneratedKeys()) {
                 if (res.next()) {
@@ -179,10 +201,11 @@ public class PsqlStore implements Store {
 
     private void updateCandidate(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("UPDATE candidate SET name = (?) WHERE id = (?)")
+             PreparedStatement ps =  cn.prepareStatement("UPDATE candidate SET name = (?), photoId = (?) WHERE id = (?)")
         ) {
             ps.setString(1, candidate.getName());
-            ps.setInt(2, candidate.getId());
+            ps.setInt(2, candidate.getPhotoId());
+            ps.setInt(3, candidate.getId());
             ps.execute();
         } catch (Exception e) {
             e.printStackTrace();
@@ -198,12 +221,101 @@ public class PsqlStore implements Store {
             ps.setInt(1, id);
             try (ResultSet res = ps.executeQuery()) {
                 if (res.next()) {
-                    candidate = new Candidate(res.getInt("id"), res.getString("name"));
+                    candidate = new Candidate(res.getInt("id"),
+                                                res.getString("name"),
+                                                res.getInt("photoId"));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return candidate;
+    }
+
+    @Override
+    public void save(Photo photo) {
+        if (photo.getId() == 0) {
+            createPhoto(photo);
+        } else {
+            updatePhoto(photo);
+        }
+    }
+
+    private Photo createPhoto(Photo photo) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("INSERT INTO photo(name) VALUES (?)",
+                     PreparedStatement.RETURN_GENERATED_KEYS)
+        ) {
+            ps.setString(1, photo.getName());
+            ps.execute();
+            try (ResultSet res = ps.getGeneratedKeys()) {
+                if (res.next()) {
+                    photo.setId(res.getInt("id"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return photo;
+    }
+
+    private void updatePhoto(Photo photo) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("UPDATE photo SET name = (?) WHERE id = (?)")
+        ) {
+            ps.setString(1, photo.getName());
+            ps.setInt(2, photo.getId());
+            ps.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Photo findPhotoById(int id) {
+        Photo photo = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM photo WHERE id = (?)")
+        ) {
+            ps.setInt(1, id);
+            try (ResultSet res = ps.executeQuery()) {
+                if (res.next()) {
+                    photo = new Photo(res.getInt("id"), res.getString("name"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return photo;
+    }
+
+    @Override
+    public void delete(Candidate candidate) {
+        candidateDelete(candidate.getId());
+        if (candidate.getPhotoId() != 0) {
+            photoDelete(candidate.getPhotoId());
+        }
+    }
+
+    private void candidateDelete(int id) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("DELETE FROM candidate WHERE id = (?)")
+        ) {
+            ps.setInt(1, id);
+            ps.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void photoDelete(int id) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("DELETE FROM photo WHERE id = (?)")
+        ) {
+            ps.setInt(1, id);
+            ps.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

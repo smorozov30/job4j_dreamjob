@@ -1,6 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="ru.job4j.dream.model.Post" %>
-<%@ page import="ru.job4j.dream.store.PsqlStore" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -18,17 +16,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Работа мечты</title>
 </head>
 <body>
-<%
-    String id = request.getParameter("id");
-    Post post = new Post(0, "", "", null);
-    if (id != null) {
-        post = PsqlStore.instOf().findPostById(Integer.valueOf(id));
-    }
-%>
 <div class="container pt-3">
     <div class="row">
         <ul class="nav">
@@ -55,23 +45,15 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                <% if (id == null) { %>
-                Новая вакансия.
-                <% } else { %>
-                Редактирование вакансии.
-                <% } %>
+                Удаление кандидата.
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/post.do?id=<%=post.getId()%>" method="post">
+                <form action="<%=request.getContextPath()%>/delete" method="post">
                     <div class="form-group">
-                        <label>Имя</label>
-                        <input type="text" class="form-control" name = "name" value="<%=post.getName()%>">
+                        <label>ID</label>
+                        <input type="text" class="form-control" name = "id">
                     </div>
-                    <div class="form-group">
-                        <label>Описание</label>
-                        <input type="text" class="form-control" name = "description" value="<%=post.getDescription()%>">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="btn btn-primary">Удалить кандидата</button>
                 </form>
             </div>
         </div>

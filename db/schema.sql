@@ -3,9 +3,13 @@ CREATE TABLE post (
      name TEXT,
      description TEXT,
      created TIMESTAMP
-
 );
 CREATE TABLE candidate (
      id SERIAL PRIMARY KEY,
-     name TEXT
+     name TEXT,
+     photoId INTEGER
+);
+CREATE TABLE photo (
+    id SERIAL PRIMARY KEY,
+    name TEXT
 );
