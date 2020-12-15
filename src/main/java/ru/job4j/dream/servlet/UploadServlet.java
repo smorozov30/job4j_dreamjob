@@ -27,6 +27,7 @@ public class UploadServlet extends HttpServlet {
             images.add(photo.getId());
         }
         req.setAttribute("images", images);
+        req.setAttribute("user", req.getSession().getAttribute("user"));
         req.getRequestDispatcher("/upload.jsp").forward(req, resp);
     }
 
