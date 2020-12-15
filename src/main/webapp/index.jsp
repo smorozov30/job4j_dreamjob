@@ -39,7 +39,7 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/upload">Добавить фото</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/delete">Удалить кандидата</a>
+                <a class="nav-link" href="<%=request.getContextPath()%>/delete.do">Удалить кандидата</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">Войти</a>

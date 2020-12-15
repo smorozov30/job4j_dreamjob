@@ -39,7 +39,7 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/upload">Добавить фото</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/delete">Удалить кандидата</a>
+                <a class="nav-link" href="<%=request.getContextPath()%>/delete.do">Удалить кандидата</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"> <c:out value="${user.name}"/> | Выйти</a>
@@ -52,7 +52,7 @@
                 Удаление кандидата.
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/delete" method="post">
+                <form action="<%=request.getContextPath()%>/delete.do" method="post">
                     <div class="form-group">
                         <label>ID</label>
                         <input type="text" class="form-control" name = "id">
