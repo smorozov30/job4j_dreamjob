@@ -11,19 +11,26 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MemStore implements Store {
-    private static final MemStore INST = new MemStore();
-    private static final AtomicInteger POST_ID = new AtomicInteger(4);
-    private static final AtomicInteger CANDIDATE_ID = new AtomicInteger(1);
-    private static final AtomicInteger PHOTO_ID = new AtomicInteger(3);
-    private static final AtomicInteger USER_ID = new AtomicInteger(2);
+    private static final AtomicInteger POST_ID = new AtomicInteger(0);
+    private static final AtomicInteger CANDIDATE_ID = new AtomicInteger(0);
+    private static final AtomicInteger PHOTO_ID = new AtomicInteger(0);
+    private static final AtomicInteger USER_ID = new AtomicInteger(0);
 
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
     private final Map<Integer, Photo> photos = new ConcurrentHashMap<>();
     private final Map<Integer, User> users = new ConcurrentHashMap<>();
 
-    public static MemStore instOf() {
-        return INST;
+    private MemStore() {
+
+    }
+
+    private static final class Lazy {
+        private static final Store INST = new MemStore();
+    }
+
+    public static Store instOf() {
+        return MemStore.Lazy.INST;
     }
 
     @Override
