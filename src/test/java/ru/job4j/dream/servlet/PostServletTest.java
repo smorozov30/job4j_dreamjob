@@ -42,7 +42,7 @@ public class PostServletTest {
 
         new PostServlet().doPost(req, resp);
 
-        Post result = store.findPostById(added.getId());
+        Post result = store.findPostById(1);
         assertThat(result.getId(), is(result.getId()));
         assertThat(result.getName(), is(result.getName()));
         assertThat(result.getDescription(), is(result.getDescription()));
