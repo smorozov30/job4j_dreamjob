@@ -25,6 +25,19 @@
                 }
                 return result;
             }
+
+            function addRow() {
+                if (validate()) {
+                    $('#table tbody tr:last').after(
+                        '<tr>' +
+                            '<td>' + $('#name').val() +'</td>' +
+                            '<td>' + $('#surname').val() +'</td>' +
+                            '<td>' + $('#sex').val() +'</td>' +
+                            '<td>' + $('#description').val() +'</td>' +
+                        '</tr>'
+                    );
+                }
+            }
         </script>
 
     </head>
@@ -53,14 +66,14 @@
                     <label for="description">Описание:</label>
                     <input type="text" class="form-control" placeholder="Enter user description..." id="description">
                 </div>
-                <button type="submit" class="btn btn-default" onclick="validate()">Submit</button>
+                <button type="reset" class="btn btn-default" onclick="addRow()">Зарегистрировать</button>
             </form>
         </div>
 
         <div class="container">
             <h2>Таблица пользователей</h2>
-            <p>Все зарегестрированные пользователи:</p>
-            <table class="table">
+            <p>Все зарегистрированные пользователи:</p>
+            <table class="table" id="table">
               <thead>
                 <tr>
                   <th>Имя</th>
