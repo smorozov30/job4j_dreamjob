@@ -7,67 +7,78 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <script>
+            function validate() {
+                let result = true;
+                let message = "";
+                let fields = [$('#name'), $('#surname'), $('#sex'), $('#description')];
+                for (let i = 0; i < fields.length; i++) {
+                    let field = fields[i];
+                    if (field.val() === "") {
+                        message = message + (field.attr("placeholder") + "\n");
+                        result = false;
+                    }
+                }
+                if (!result) {
+                    alert(message);
+                }
+                return result;
+            }
+        </script>
+
     </head>
     <body>
 
         <div class="container-fluid container">
-            <h1>My First Bootstrap Page</h1>
-            <p>This is some text.</p>
+            <h1>Разработчики</h1>
+            <p>Регистрация и список</p>
         </div>
 
         <div class="container">
-            <form action="/action_page.php">
+            <form method="post">
                 <div class="form-group">
                     <label for="name">Имя:</label>
-                    <input type="text" class="form-control" id="name">
+                    <input type="text" class="form-control" placeholder="Enter user name..." id="name">
                 </div>
                 <div class="form-group">
-                    <label for="lastName">Фамилия:</label>
-                    <input type="text" class="form-control" id="lastName">
+                    <label for="surname">Фамилия:</label>
+                    <input type="text" class="form-control" placeholder="Enter user surname..." id="surname">
                 </div>
                 <div class="form-group">
                     <label for="sex">Пол:</label>
-                    <input type="text" class="form-control" id="sex">
+                    <input type="text" class="form-control" placeholder="Enter user sex..." id="sex">
                 </div>
                 <div class="form-group">
                     <label for="description">Описание:</label>
-                    <input type="text" class="form-control" id="description">
+                    <input type="text" class="form-control" placeholder="Enter user description..." id="description">
                 </div>
-                <button type="submit" class="btn btn-default">Submit</button>
+                <button type="submit" class="btn btn-default" onclick="validate()">Submit</button>
             </form>
         </div>
 
         <div class="container">
-            <h2>Basic Table</h2>
-            <p>The .table class adds basic styling (light padding and only horizontal dividers) to a table:</p>            
+            <h2>Таблица пользователей</h2>
+            <p>Все зарегестрированные пользователи:</p>
             <table class="table">
               <thead>
                 <tr>
-                  <th>Firstname</th>
-                  <th>Lastname</th>
-                  <th>Email</th>
+                  <th>Имя</th>
+                  <th>Фамилия</th>
+                  <th>Пол</th>
+                  <th>Описание</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>John</td>
-                  <td>Doe</td>
-                  <td>john@example.com</td>
-                </tr>
-                <tr>
-                  <td>Mary</td>
-                  <td>Moe</td>
-                  <td>mary@example.com</td>
-                </tr>
-                <tr>
-                  <td>July</td>
-                  <td>Dooley</td>
-                  <td>july@example.com</td>
+                  <td>Сергей</td>
+                  <td>Морозов</td>
+                  <td>Мужской</td>
+                  <td>Junior разработчик</td>
                 </tr>
               </tbody>
             </table>
           </div>
-        
 
     </body>
 </html>
