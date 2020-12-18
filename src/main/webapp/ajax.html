@@ -12,13 +12,14 @@
 
 <script>
     function sendGreeting() {
+
         $.ajax({
             type: 'GET',
             url: 'http://localhost:8080/dreamjob/greet',
-            data: 'name=' + $('#name').val(),
-            dataType: 'text'
+            data: {name : $('#name').val()},
+            dataType: 'json'
         }).done(function(data) {
-            $('#divEnter input').before(data);
+            $('#divEnter input').before(data.text);
         }).fail(function(err){
             alert(err);
         });
