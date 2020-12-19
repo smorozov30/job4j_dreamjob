@@ -20,6 +20,26 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script>
+        function validate() {
+            let result = true;
+            let message = "";
+            let fields = [$('#name'), $('#description')];
+            for (let i = 0; i < fields.length; i++) {
+                let field = fields[i];
+                if (field.val() === "") {
+                    message = message + (field.attr("placeholder") + "\n");
+                    result = false;
+                }
+            }
+            if (!result) {
+                alert(message);
+            }
+            return result;
+        }
+    </script>
+
     <title>Работа мечты</title>
 </head>
 <body>
@@ -69,13 +89,13 @@
                 <form action="<%=request.getContextPath()%>/post.do?id=<%=post.getId()%>" method="post">
                     <div class="form-group">
                         <label>Имя</label>
-                        <input type="text" class="form-control" name = "name" value="<%=post.getName()%>">
+                        <input type="text" required class="form-control" name = "name" value="<%=post.getName()%>" id="name" placeholder="Введите имя...">
                     </div>
                     <div class="form-group">
                         <label>Описание</label>
-                        <input type="text" class="form-control" name = "description" value="<%=post.getDescription()%>">
+                        <input type="text" required class="form-control" name = "description" value="<%=post.getDescription()%>" id="description" placeholder="Введите описание...">
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="btn btn-primary" onclick="validate()">Сохранить</button>
                 </form>
             </div>
         </div>

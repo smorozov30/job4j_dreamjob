@@ -16,6 +16,25 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
+    <script>
+        function validate() {
+            let result = true;
+            let message = "";
+            let fields = [$('#name'), $('#email'), $('#password')];
+            for (let i = 0; i < fields.length; i++) {
+                let field = fields[i];
+                if (field.val() === "") {
+                    message = message + (field.attr("placeholder") + "\n");
+                    result = false;
+                }
+            }
+            if (!result) {
+                alert(message);
+            }
+            return result;
+        }
+    </script>
+
     <title>Работа мечты</title>
 </head>
 <body>
@@ -30,21 +49,21 @@
                 <form action="<%=request.getContextPath()%>/reg.do" method="post">
                     <div class="form-group">
                         <label>Имя</label>
-                        <input type="text" class="form-control" name="name">
+                        <input type="text" required class="form-control" name="name" id="name" placeholder="Введите имя...">
                     </div>
                     <div class="form-group">
                         <label>Почта</label>
-                        <input type="text" class="form-control" name="email">
+                        <input type="text" required class="form-control" name="email" id="email" placeholder="Введите почту...">
                     </div>
                     <div class="form-group">
                         <label>Пароль</label>
-                        <input type="text" class="form-control" name="password">
+                        <input type="password" required class="form-control" name="password" id="password" placeholder="Введите пароль...">
                     </div>
                     <% String error = (String) request.getAttribute("error"); %>
                     <% if (error != null) { %>
                     <%= error %>
                     <% }  %><br>
-                    <button type="submit" class="btn btn-primary">Отправить</button>
+                    <button type="submit" class="btn btn-primary" onclick="validate()">Отправить</button>
                 </form>
             </div>
         </div>

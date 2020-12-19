@@ -97,4 +97,13 @@
     <url-pattern>/greet</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>CitiesServlet</servlet-name>
+    <servlet-class>ru.job4j.dream.servlet.CitiesServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CitiesServlet</servlet-name>
+    <url-pattern>/cities</url-pattern>
+  </servlet-mapping>
+
 </web-app>

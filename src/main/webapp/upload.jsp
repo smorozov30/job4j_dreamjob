@@ -18,6 +18,26 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script>
+        function validate() {
+            let result = true;
+            let message = "";
+            let fields = [$('#file')];
+            for (let i = 0; i < fields.length; i++) {
+                let field = fields[i];
+                if (field.val() === "") {
+                    message = message + (field.attr("placeholder") + "\n");
+                    result = false;
+                }
+            }
+            if (!result) {
+                alert(message);
+            }
+            return result;
+        }
+    </script>
+
     <title>Работа мечты</title>
 </head>
 <body>
@@ -69,9 +89,9 @@
     <h2>Загрузить фото</h2>
     <form action="<c:url value='/upload'/>" method="post" enctype="multipart/form-data">
         <div class="checkbox">
-            <input type="file" name="file">
+            <input type="file" required name="file" id="file" placeholder="Выберите файл...">
         </div>
-        <button type="submit" class="btn btn-default">Отправить</button>
+        <button type="submit" class="btn btn-primary" onclick="validate()">Отправить</button>
     </form>
 </div>
 

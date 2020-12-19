@@ -7,7 +7,8 @@ CREATE TABLE post (
 CREATE TABLE candidate (
      id SERIAL PRIMARY KEY,
      name TEXT,
-     photoId INTEGER
+     photoId INTEGER,
+     cityId INTEGER
 );
 CREATE TABLE photo (
     id SERIAL PRIMARY KEY,
@@ -18,4 +19,8 @@ CREATE TABLE users (
     name TEXT,
     email TEXT,
     password TEXT
+);
+CREATE TABLE city (
+   id SERIAL PRIMARY KEY,
+   name TEXT
 );

@@ -6,11 +6,20 @@ public class Candidate {
     private int id;
     private String name;
     private int photoId;
+    private int cityId;
+    private String city;
 
     public Candidate(int id, String name, int photoId) {
         this.id = id;
         this.name = name;
         this.photoId = photoId;
+    }
+
+    public Candidate(int id, String name, int photoId, String city) {
+        this.id = id;
+        this.name = name;
+        this.photoId = photoId;
+        this.city = city;
     }
 
     public int getId() {
@@ -35,6 +44,22 @@ public class Candidate {
 
     public void setPhotoId(int photoId) {
         this.photoId = photoId;
+    }
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     @Override

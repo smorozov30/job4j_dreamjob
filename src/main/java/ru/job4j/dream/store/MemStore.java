@@ -1,9 +1,6 @@
 package ru.job4j.dream.store;
 
-import ru.job4j.dream.model.Candidate;
-import ru.job4j.dream.model.Photo;
-import ru.job4j.dream.model.Post;
-import ru.job4j.dream.model.User;
+import ru.job4j.dream.model.*;
 
 import java.util.Collection;
 import java.util.Map;
@@ -15,11 +12,13 @@ public class MemStore implements Store {
     private static final AtomicInteger CANDIDATE_ID = new AtomicInteger(0);
     private static final AtomicInteger PHOTO_ID = new AtomicInteger(0);
     private static final AtomicInteger USER_ID = new AtomicInteger(0);
+    private static final AtomicInteger CITY_ID = new AtomicInteger(0);
 
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
     private final Map<Integer, Photo> photos = new ConcurrentHashMap<>();
     private final Map<Integer, User> users = new ConcurrentHashMap<>();
+    private final Map<Integer, City> cities = new ConcurrentHashMap<>();
 
     private MemStore() {
 
@@ -46,6 +45,16 @@ public class MemStore implements Store {
     @Override
     public Collection<Photo> findAllPhotos() {
         return photos.values();
+    }
+
+    @Override
+    public Collection<City> findAllCities() {
+        return cities.values();
+    }
+
+    @Override
+    public City findCityById(int id) {
+        return cities.get(id);
     }
 
     @Override

@@ -17,6 +17,27 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
+    <script>
+
+        function validate() {
+            let result = true;
+            let message = "";
+            let fields = [$('#id')];
+            for (let i = 0; i < fields.length; i++) {
+                let field = fields[i];
+                if (field.val() === "") {
+                    message = message + (field.attr("placeholder") + "\n");
+                    result = false;
+                }
+            }
+            if (!result) {
+                alert(message);
+            }
+            return result;
+        }
+
+    </script>
+
     <title>Работа мечты</title>
 </head>
 <body>
@@ -55,9 +76,9 @@
                 <form action="<%=request.getContextPath()%>/delete.do" method="post">
                     <div class="form-group">
                         <label>ID</label>
-                        <input type="text" class="form-control" name = "id">
+                        <input type="number" required class="form-control" name = "id" id="id" placeholder="Введите ID...">
                     </div>
-                    <button type="submit" class="btn btn-primary">Удалить кандидата</button>
+                    <button type="submit" class="btn btn-primary" onclick="validate()">Удалить кандидата</button>
                 </form>
             </div>
         </div>
