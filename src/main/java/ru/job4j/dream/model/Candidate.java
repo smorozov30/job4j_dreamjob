@@ -15,11 +15,11 @@ public class Candidate {
         this.photoId = photoId;
     }
 
-    public Candidate(int id, String name, int photoId, String city) {
+    public Candidate(int id, String name, int photoId, int cityId) {
         this.id = id;
         this.name = name;
         this.photoId = photoId;
-        this.city = city;
+        this.cityId = cityId;
     }
 
     public int getId() {

@@ -53,11 +53,6 @@ public class MemStore implements Store {
     }
 
     @Override
-    public City findCityById(int id) {
-        return cities.get(id);
-    }
-
-    @Override
     public void save(Post post) {
         if (post.getId() == 0) {
             post.setId(POST_ID.incrementAndGet());

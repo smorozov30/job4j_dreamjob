@@ -38,6 +38,7 @@ public class CandidateServletTest {
         when(req.getParameter("id")).thenReturn("0");
         when(req.getParameter("name")).thenReturn("Sergey Morozov");
         when(req.getParameter("photoId")).thenReturn("0");
+        when(req.getParameter("cityId")).thenReturn("1");
 
         new CandidateServlet().doPost(req, resp);
 

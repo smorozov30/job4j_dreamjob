@@ -20,7 +20,6 @@ public interface Store {
     Photo findPhotoById(int id);
     Collection<Photo> findAllPhotos();
 
-    City findCityById(int id);
     Collection<City> findAllCities();
 
     void delete(Candidate candidate);

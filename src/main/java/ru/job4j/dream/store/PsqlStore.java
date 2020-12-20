@@ -186,17 +186,13 @@ public class PsqlStore implements Store {
     }
 
     private Candidate createCandidate(Candidate candidate) {
-        City city = checkCityByName(new City(0, candidate.getCity()));
-        if (city.getId() == 0) {
-            city = createCity(city);
-        }
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement("INSERT INTO candidate(name, photoId, cityId) VALUES (?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, candidate.getName());
             ps.setInt(2, candidate.getPhotoId());
-            ps.setInt(3, city.getId());
+            ps.setInt(3, candidate.getId());
             ps.execute();
             try (ResultSet res = ps.getGeneratedKeys()) {
                 if (res.next()) {
@@ -210,16 +206,12 @@ public class PsqlStore implements Store {
     }
 
     private void updateCandidate(Candidate candidate) {
-        City city = checkCityByName(new City(0, candidate.getCity()));
-        if (city.getId() == 0) {
-            city = createCity(city);
-        }
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement("UPDATE candidate SET name = (?), photoId = (?), cityId = (?) WHERE id = (?)")
         ) {
             ps.setString(1, candidate.getName());
             ps.setInt(2, candidate.getPhotoId());
-            ps.setInt(3, city.getId());
+            ps.setInt(3, candidate.getId());
             ps.setInt(4, candidate.getId());
             ps.execute();
         } catch (Exception e) {
@@ -239,11 +231,6 @@ public class PsqlStore implements Store {
                     candidate = new Candidate(res.getInt("id"),
                             res.getString("name"),
                             res.getInt("photoId"));
-                    City city = findCityById(res.getInt("cityId"));
-                    if (city != null) {
-                        candidate.setCityId(city.getId());
-                        candidate.setCity(city.getName());
-                    }
                 }
             }
         } catch (Exception e) {
@@ -260,15 +247,10 @@ public class PsqlStore implements Store {
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    City city = findCityById(it.getInt("cityId"));
                     Candidate candidate = new Candidate(it.getInt("id"),
                             it.getString("name"),
                             it.getInt("photoId")
                     );
-                    if (city != null) {
-                        candidate.setCityId(city.getId());
-                        candidate.setCity(city.getName());
-                    }
                     candidates.add(candidate);
                 }
             }
@@ -351,59 +333,6 @@ public class PsqlStore implements Store {
             LOG.error(e.getMessage(), e);
         }
         return photos;
-    }
-
-    private City createCity(City city) {
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("INSERT INTO city(city) VALUES (?)",
-                     PreparedStatement.RETURN_GENERATED_KEYS)
-        ) {
-            ps.setString(1, city.getName());
-            ps.execute();
-            try (ResultSet res = ps.getGeneratedKeys()) {
-                if (res.next()) {
-                    city.setId(res.getInt("id"));
-                }
-            }
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-        }
-        return city;
-    }
-
-    private City checkCityByName(City city) {
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM city WHERE city = (?)")
-        ) {
-            ps.setString(1, city.getName());
-            try (ResultSet res = ps.executeQuery()) {
-                if (res.next()) {
-                    city = new City(res.getInt("id"),
-                            res.getString("city"));
-                }
-            }
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-        }
-        return city;
-    }
-
-    @Override
-    public City findCityById(int id) {
-        City city = null;
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM city WHERE id = (?)")
-        ) {
-            ps.setInt(1, id);
-            try (ResultSet res = ps.executeQuery()) {
-                if (res.next()) {
-                    city = new City(res.getInt("id"), res.getString("city"));
-                }
-            }
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-        }
-        return city;
     }
 
     @Override

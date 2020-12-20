@@ -44,7 +44,7 @@
                 dataType: 'json'
             }).done(function(data) {
                 for (let i = 0; i < data.length; i++) {
-                    $('#cityId').append('<option value=' + data[i].name + '>' + data[i].name + '</option>');
+                    $('#cityId').append('<option value=' + data[i].id + '>' + data[i].name + '</option>');
                 }
             }).fail(function(err){
                 alert(err);
@@ -57,7 +57,7 @@
 <body>
 <%
     String id = request.getParameter("id");
-    Candidate candidate = new Candidate(0, "", 0, "");
+    Candidate candidate = new Candidate(0, "", 0, 1);
     if (id != null) {
         candidate = PsqlStore.instOf().findCandidateById(Integer.parseInt(id));
     }
