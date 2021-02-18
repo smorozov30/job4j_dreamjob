@@ -344,7 +344,7 @@ public class PsqlStore implements Store {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
                     photos.add(new City(it.getInt("id"),
-                            it.getString("city")));
+                            it.getString("name")));
                 }
             }
         } catch (Exception e) {
