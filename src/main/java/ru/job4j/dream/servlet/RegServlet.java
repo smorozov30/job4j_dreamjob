@@ -4,11 +4,13 @@ import ru.job4j.dream.model.User;
 import ru.job4j.dream.store.PsqlStore;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@WebServlet(name = "RegServlet", urlPatterns = {"/reg.do"})
 public class RegServlet extends HttpServlet {
 
     @Override
